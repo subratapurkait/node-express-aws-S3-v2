@@ -1,4 +1,4 @@
-# node-express-aws-SDK-S3-v2
+# node-express-aws-sdk-S3
 
 # Node.js Express and AWS SDK S3 (v2) File Upload Tutorial
 
@@ -15,7 +15,7 @@ This tutorial demonstrates how to build a simple Node.js Express application for
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/subratapurkait/node-express-aws-S3-v2.git
+    git clone https://github.com/subratapurkait/node-express-aws-sdk-S3.git
     cd node-express-aws-s3-v2
     ```
 
