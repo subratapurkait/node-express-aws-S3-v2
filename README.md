@@ -1,6 +1,6 @@
-# node-express-aws-S3-v2
+# node-express-aws-SDK-S3-v2
 
-# Node.js Express and AWS S3 (v2) File Upload Tutorial
+# Node.js Express and AWS SDK S3 (v2) File Upload Tutorial
 
 This tutorial demonstrates how to build a simple Node.js Express application for file uploads to AWS S3 using the AWS SDK version 2 (v2).
 
