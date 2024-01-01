@@ -7,6 +7,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 // multer({ storage: storage }) for buffer storage
 
+app.set('view engine', 'ejs');
 require('dotenv').config();
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
@@ -19,11 +20,11 @@ const s3 = new AWS.S3({
     accessKeyId,
     secretAccessKey
 });
-function createBucket(){
-// create bucket
+function createBucket() {
+    // create bucket
     s3.createBucket({
         Bucket: Bucket
-    }, (error, success)=>{
+    }, (error, success) => {
         if (error) {
             console.log(error);
         }
@@ -31,52 +32,106 @@ function createBucket(){
     });
 }
 
-function deleteObject(Bucket, Key){
-// delete object
-    s3.deleteObject({
-        Bucket: Bucket,
-        Key: Key
-    }, (error, success)=>{
-        if (error) {
-            console.log(error);
+function deleteObject(Bucket, Key) {
+    // delete object
+    const output = new Promise((resolve, reject) => {
+        try {
+            s3.deleteObject({
+                Bucket: Bucket,
+                Key: Key
+            }, (error, success) => {
+                if (error) {
+                    console.log(error);
+                }
+                console.log(success);
+            });
+        } catch (error) {
+            reject(error)
         }
-        console.log(success);
-    });
+    })
+    return output;
 }
-  
-function deleteBucket(Bucket){
-// delete bucket
+
+function deleteBucket(Bucket) {
+    // delete bucket
     s3.deleteBucket({
         Bucket: Bucket
-    }, (error, success)=>{
+    }, (error, success) => {
         if (error) {
             console.log(error);
         }
         console.log(success);
     });
 }
-    
-app.get('/', (req, res) => {
-    // const arr = ['hrithik.jpg', 'hrx.jpeg', 'shubro.jpg']
-    // arr.forEach(e=>deleteObject(Bucket, e))
-  res.sendFile(__dirname + '/index.html');
+
+function listObjects(Bucket) {
+
+    var params = {
+        Bucket: Bucket, /* required */
+        // Prefix: 'folder name if any' 
+    };
+    const output = new Promise((resolve, reject) => {
+        try {
+            s3.listObjectsV2(params, function (err, data) {
+                if (err) {
+                    console.log(err, err.stack);
+                    reject(err) // an error occurred
+                } else {
+                    const imageBuffer = data.Contents;
+                    const listData = imageBuffer.map(e => e.Key)
+                    // console.log(listData);
+                    resolve(listData)
+                }
+            });
+        } catch (error) {
+            reject(error)
+        }
+    })
+    return output;
+    // s3.getObject({
+    //     Bucket: bucketName,
+    //     Key: objectKey,
+    // }, (err, data) => {
+    //     if (err) {
+    //         console.log(err);
+    //         return;
+    //     }
+    // }); 
+}
+app.get('/', async (req, res) => {
+    // res.sendFile(__dirname + '/index.html');
+     const data = await listObjects(Bucket);    //syntactic sugar async/await
+     const listData = data;
+     res.render('datatable', { listData })  
+
 });
 
-app.post('/upload', upload.single('file'), (req, res) => {
-  const fileBuffer = req.file.buffer;
+app.post('/', upload.single('file'), (req, res) => {
+    const fileBuffer = req.file.buffer;
 
-  s3.putObject({
-    Bucket: Bucket,
-    Key: req.file.originalname,
-    Body: fileBuffer
+    s3.putObject({
+        Bucket: Bucket,
+        Key: req.file.originalname,
+        Body: fileBuffer
 
-  }, (err, success)=>{
-    if(err) console.log(err)
-    console.log(success);
-    res.json({data: success})
-  })
+    }, async (err, success) => {
+        if (err) console.log(err)
+        console.log(success);
+        const data = await listObjects(Bucket);    //syntactic sugar async/await
+        const listData = data;
+        res.render('datatable', { listData })   
+        // data.then(listData => res.render('datatable', { listData })).catch(err=> console.log(err)) // promise chaining method
+    })
+});
+
+app.get('/delete', async (req, res, next) => {
+    const data = await listObjects(Bucket);    //syntactic sugar async/await
+    data.forEach(e=>deleteObject(Bucket, e))
+    const listData = '';
+    res.render('datatable', { listData })   
+    next();
 });
 
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+    console.log(`Server listening at http://localhost:${port}`);
 });
