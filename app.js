@@ -102,7 +102,7 @@ app.get('/', async (req, res) => {
     // res.sendFile(__dirname + '/index.html');
      const data = await listObjects(Bucket);    //syntactic sugar async/await
      const listData = data;
-     res.render('datatable', { listData })  
+     res.render('index', { listData })  
 
 });
 
@@ -119,8 +119,8 @@ app.post('/', upload.single('file'), (req, res) => {
         console.log(success);
         const data = await listObjects(Bucket);    //syntactic sugar async/await
         const listData = data;
-        res.render('datatable', { listData })   
-        // data.then(listData => res.render('datatable', { listData })).catch(err=> console.log(err)) // promise chaining method
+        res.render('index', { listData })   
+        // data.then(listData => res.render('index', { listData })).catch(err=> console.log(err)) // promise chaining method
     })
 });
 
@@ -128,7 +128,7 @@ app.get('/delete', async (req, res, next) => {
     const data = await listObjects(Bucket);    //syntactic sugar async/await
     data.forEach(e=>deleteObject(Bucket, e))
     const listData = '';
-    res.render('datatable', { listData })   
+    res.render('index', { listData })   
     next();
 });
 

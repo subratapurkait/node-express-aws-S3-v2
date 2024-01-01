@@ -54,7 +54,7 @@ This tutorial demonstrates how to build a simple Node.js Express application for
 ## Project Structure
 
 - `app.js`: The main entry point for the Express application.
-- `index.html`: the homepage.
+- `views/index.ejs`: the homepage.
 
 ## Dependencies
 
@@ -62,6 +62,7 @@ This tutorial demonstrates how to build a simple Node.js Express application for
 - aws-sdk: ^2.1528.0
 - dotenv: ^16.3.1
 - multer: ^1.4.5-lts.1
+- ejs: ^3.1.9
 
 ## Acknowledgments
 
