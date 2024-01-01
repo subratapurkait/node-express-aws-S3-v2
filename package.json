@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "subratapurkait08@gmail.com",
   "main": "app.js",
+  "repository": "https://github.com/subratapurkait/node-express-aws-sdk-S3.git",
   "scripts": {
-    "start": "yarn install && node app.js",
-    "build": "yarn install"
+    "start": "node app.js",
+    "build": "npm install"
   },
   "keywords": [],
   "author": "subrata purkait",
