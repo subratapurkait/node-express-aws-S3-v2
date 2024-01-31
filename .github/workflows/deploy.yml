@@ -22,7 +22,7 @@ jobs:
       run: |
         docker build -t express-docker-image:latest .
         docker tag express-docker-image:latest express-docker-image:latest
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }}
         docker push express-docker-image:latest
 
     - name: SSH into EC2 instance and deploy
