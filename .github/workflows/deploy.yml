@@ -26,7 +26,7 @@ jobs:
         docker push ${{ secrets.DOCKER_REPO_URL }}/express-docker-image:latest
 
     - name: SSH into EC2 instance and deploy
-      uses: subrata/ssh-action@master
+      uses: subratapurkait/node-express-aws-sdk-S3@docker-code
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
