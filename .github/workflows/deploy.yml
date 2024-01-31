@@ -23,7 +23,7 @@ jobs:
         docker build -t express-docker-image/express-docker-image:latest .
         docker tag express-docker-image:latest ${{ secrets.DOCKER_REPO_URL }}/express-docker-image:latest
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push ${{ secrets.DOCKER_REPO_URL }}/express-docker-image:latest
+        docker push express-docker-image/express-docker-image:latest
 
     - name: SSH into EC2 instance and deploy
       uses: subratapurkait/node-express-aws-sdk-S3@docker-code
