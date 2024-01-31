@@ -20,7 +20,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t express-docker-image .
+        docker build -t express-docker-image/express-docker-image:latest .
         docker tag express-docker-image:latest ${{ secrets.DOCKER_REPO_URL }}/express-docker-image:latest
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push ${{ secrets.DOCKER_REPO_URL }}/express-docker-image:latest
