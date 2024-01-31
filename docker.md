@@ -27,3 +27,9 @@ to check for dockerID use command ```docker ps```
 
 ``` --env-file ./.env ```
 for env files
+
+docker tag express-docker-image subratapurkait/express-docker-node:tagname
+
+docker push subratapurkait/express-docker-image:ec2
+
+docker push yourusername/imagename:tag
