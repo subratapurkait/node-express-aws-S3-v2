@@ -1,12 +1,15 @@
 name: Deploy to EC2
+
 on:
   push:
     branches:
-      - docker-code
+      - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-steps:
+
+    steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -14,6 +17,7 @@ steps:
       uses: actions/setup-node@v3
       with:
         node-version: '16'
+
     - name: Build and push Docker image
       run: |
         docker build -t dummy-server .
@@ -22,7 +26,7 @@ steps:
         docker push ${{ secrets.DOCKER_REPO_URL }}/dummy-server:latest
 
     - name: SSH into EC2 instance and deploy
-      uses: subrata/ssh-action@master
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
